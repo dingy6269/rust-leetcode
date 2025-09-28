@@ -21,17 +21,17 @@ impl Solution {
         match (list1, list2) {
             (None, None) => None,
             (Some(n), None) | (None, Some(n)) => Some(n),
-            (Some(n1), Some(n2)) => {
-                if (n1.val < n2.val) {
-                    Some(Box::new(ListNode {
-                        val: n1.val,
-                        next: Self::merge_two_lists(n1.next, Some(n2)),
-                    }))
+            (Some(mut n1), Some(mut n2)) => {
+                if n1.val < n2.val {
+                    let next = n1.next.take();
+                    n1.next = Self::merge_two_lists(next, Some(n2));
+                
+                    Some(n1)
                 } else {
-                    Some(Box::new(ListNode {
-                        val: n2.val,
-                        next: Self::merge_two_lists(Some(n1), n2.next),
-                    }))
+                    let next = n2.next.take();
+                    n2.next = Self::merge_two_lists(Some(n1), next);
+
+                    Some(n2)
                 }
             }
         }

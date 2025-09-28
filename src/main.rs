@@ -73,6 +73,8 @@ mod tests {
 
 
 
+use std::collections::HashMap;
+
 struct Solution {}
 
 impl Solution {
@@ -123,8 +125,6 @@ impl Solution {
             }
 
         }
-
-        println!("{:?}", result);
 
         assert_eq!(result, 1994);
     }

@@ -1,36 +1,28 @@
-struct Solution;
+use std::collections::HashMap;
+
+struct Solution {}
 
 impl Solution {
-    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-        for (i1, v1) in nums.iter().enumerate() {
-            for (i2, v2) in nums.iter().enumerate().skip(i1 + 1) {
-                let sum = v1 + v2;
+    fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+        let mut map = HashMap::new();
 
-                if sum == target {
-                    return vec![i1 as i32, i2 as i32];
-                }
+        for (i, v) in nums.iter().enumerate() {
+            if let Some(&j) = map.get(&(target - v)) {
+                return vec![j, i as i32];
             }
+
+            map.insert(v, i as i32);
         }
 
         vec![]
     }
 }
 
-
-
-fn main() {}
-
 #[cfg(test)]
 mod tests {
-    #[test]
-    fn test_iterator() {
-        let v = vec!["a".to_string(), "b".to_string()];
-        let mut v_iter = v.into_iter();
+    fn t1() {
+        // let mut book_reviews = HashMap::new();
 
-        let first_element: Option<String> = v_iter.next();
-
-        assert_eq!(first_element, Some("a".to_string()));
-        assert_eq!(v_iter.next(), Some("b".to_string()));
-        assert_eq!(v_iter.next(), None);
+        // book_reviews.insert
     }
 }

@@ -7,15 +7,20 @@ impl Solution {
         let mut rows = Vec::new();
         let mut columns = Vec::new();
 
-        for row in board {
-            let mut seen = HashSet::with_capacity(row.len());
+        let seen_width = board.get(0).map_or(0, |row| row.len());
+        let mut seen_y : Vec<Vec<char>> = vec![Vec::new(), 9];
 
-            for cell in row {
-                if seen.contains(&cell) {
+        for (ri, row) in board.into_iter().enumerate() {
+            let mut seen_x = HashSet::with_capacity(row.len());
+
+            for (ci, cell) in row.into_iter().enumerate() {
+                if seen_x.contains(&cell) {
                     return false;
                 };
 
-                seen.insert(cell);
+                seen_y[ci].push(cell);
+
+                seen_x.insert(cell);
             }
         }
 

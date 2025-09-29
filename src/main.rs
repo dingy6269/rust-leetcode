@@ -7,32 +7,33 @@ impl Solution {
     let mut l = 0;
     let mut r = height.len() - 1;
 
-    let mut l_max = 0;
-    let mut r_max = 0;
+    let mut l_max = height[l];
+    let mut r_max = height[r];
 
-    while l <= r {
+    while l < r {
       let left = height[l];
       let right = height[r];
 
-      l_max = l_max.max(left);
-      r_max = r_max.max(right);
+      if (l_max <= r_max) {
+        l += 1;
 
-      let level = r_max.min(l_max);
+        l_max = l_max.max(left);
 
-      if right < r_max {
-        let delta = level - right;
+        if left < l_max {
+          let delta = l_max - left;
 
-        outcome += delta;
+          outcome += delta;
+        }
+      } else {
+        r -= 1;
+        r_max = r_max.max(right);
+
+        if right < r_max {
+          let delta = r_max - right;
+
+          outcome += delta;
+        }
       }
-
-      if left < l_max {
-        let delta = level - left;
-
-        outcome += delta;
-      }
-
-      l += 1;
-      r -= 1;
     }
 
     outcome

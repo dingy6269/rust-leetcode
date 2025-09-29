@@ -21,28 +21,19 @@ impl Solution {
       let mut seen_x = HashSet::with_capacity(row.len());
 
       for (ci, cell) in row.into_iter().enumerate() {
-        let x_3 = ci / 3;
-        let y_3 = ri / 3;
-
         if !cell.is_numeric() {
           continue;
         }
 
-        if seen_x.contains(&cell) {
-          return false;
-        };
+        let x_3 = ci / 3;
+        let y_3 = ri / 3;
 
-        if seen_y[ci].contains(&cell) {
-          return false;
-        }
 
-        if seen_3[x_3][y_3].contains(&cell) {
-          return false;
-        }
-
-        seen_x.insert(cell);
-        seen_y[ci].insert(cell);
-        seen_3[x_3][y_3].insert(cell);
+        if !seen_x.insert(cell) ||
+           !seen_y[ci].insert(cell) ||
+           !seen_3[x_3][y_3].insert(cell) {
+            return false;
+           }
       }
     }
 

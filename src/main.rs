@@ -1,98 +1,47 @@
-use std::collections::HashSet;
-
 struct Solution {}
 
 impl Solution {
-  pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
-    let width = board.get(0).map_or(0, |row| row.len());
-    let width_3 = width / 3;
+  pub fn trap(height: Vec<i32>) -> i32 {
+    let mut outcome: i32 = 0;
 
-    dbg!(width);
+    let mut l = 0;
+    let mut r = height.len() - 1;
 
-    let mut seen_y: Vec<HashSet<char>> =
-      vec![HashSet::with_capacity(width); width];
+    let mut l_max = 0;
+    let mut r_max = 0;
 
-    let mut seen_3: Vec<Vec<HashSet<char>>> = vec![
-        vec![HashSet::with_capacity(width); width_3];
-        width_3
-      ];
+    while l <= r {
+      let left = height[l];
+      let right = height[r];
 
-    for (ri, row) in board.into_iter().enumerate() {
-      let mut seen_x = HashSet::with_capacity(row.len());
+      l_max = l_max.max(left);
+      r_max = r_max.max(right);
 
-      for (ci, cell) in row.into_iter().enumerate() {
-        if !cell.is_numeric() {
-          continue;
-        }
+      let level = r_max.min(l_max);
 
-        let x_3 = ci / 3;
-        let y_3 = ri / 3;
+      if right < r_max {
+        let delta = level - right;
 
-
-        if !seen_x.insert(cell) ||
-           !seen_y[ci].insert(cell) ||
-           !seen_3[x_3][y_3].insert(cell) {
-            return false;
-           }
+        outcome += delta;
       }
+
+      if left < l_max {
+        let delta = level - left;
+
+        outcome += delta;
+      }
+
+      l += 1;
+      r -= 1;
     }
 
-    true
+    outcome
   }
 }
 
-// trait IsNumeric {
-//     fn is_numeric(&self) -> bool;
-// }
-
-// impl IsNumeric for &str {
-//     fn is_numeric(&self) -> bool {
-//         self.parse::<i32>().is_ok()
-//     }
-// }
-
-// impl IsNumeric for char {
-//     fn is_numeric(&self) -> bool {
-//         self.is_ascii_digit()
-//     }
-// }
-
 fn main() {
-  let x = 2 / 3; // 0
-  let y = 3 / 3; // 1 
-  // should be 0
+  let height: Vec<i32> =
+    vec![0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1];
 
-  // let r = [[[], []], [], []];
-
-  // let stuff = HashMap::[
-  //     ()
-  // ]
-
-  let group = (3) / 3;
-
-  println!("{}", group);
-
-  let board = vec![
-    vec!['5', '3', '.', '.', '7', '.', '.', '.', '.'],
-    vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
-    vec!['.', '9', '8', '.', '.', '.', '.', '6', '.'],
-    vec!['8', '.', '.', '.', '6', '.', '.', '.', '3'],
-    vec!['4', '.', '.', '8', '.', '3', '.', '.', '1'],
-    vec!['7', '.', '.', '.', '2', '.', '.', '.', '6'],
-    vec!['.', '6', '.', '.', '.', '.', '2', '8', '.'],
-    vec!['.', '.', '.', '4', '1', '9', '.', '.', '5'],
-    vec!['.', '.', '.', '.', '8', '.', '.', '7', '9'],
-  ];
-
-  let result = Solution::is_valid_sudoku(board);
-
-  println!("result {}", result);
-  assert!(result);
-}
-
-#[cfg(test)]
-mod tests {
-
-  #[test]
-  fn r1() {}
+  println!("{}", Solution::trap(height));
 }

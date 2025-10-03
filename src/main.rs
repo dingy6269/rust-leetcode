@@ -1,50 +1,38 @@
-struct Solution {}
+use std::collections::HashMap;
+use std::process::ExitCode;
 
 impl Solution {
-  pub fn trap(height: Vec<i32>) -> i32 {
-    let mut outcome: i32 = 0;
+  pub fn group_anagrams(strs: Vec<String>) {
+  }
 
-    let mut l = 0;
-    let mut r = height.len() - 1;
+  pub fn is_anagram(str: String) {
+    let mut chars = HashMap::new();
 
-    let mut l_max = height[l];
-    let mut r_max = height[r];
-
-    while l < r {
-      let mut left = height[l];
-      let mut right = height[r];
-
-      if (l_max <= r_max) {
-        l += 1;
-        left = height[l];
-
-        l_max = l_max.max(left);
-
-        if left < l_max {
-          let delta = l_max - left;
-
-          outcome += delta;
-        }
-      } else {
-        r -= 1;
-        right = height[r];
-
-        r_max = r_max.max(right);
-
-        if right < r_max {
-          let delta = r_max - right;
-
-          outcome += delta;
-        }
+    for char in str.chars() {
+      if !chars.contains_key(&char) {
+        chars.insert(char, 0);
       }
+
+      let candidate =
+        chars.get(&char).unwrap_or_else(|| &0);
+
+      let increment = candidate + 1;
+      chars.insert(char, increment);
     }
 
-    outcome
+    println!("{:?}", chars);
   }
 }
 
-fn main() {
-  let height: Vec<i32> = vec![5, 5, 1, 7, 1, 1, 5, 2, 7, 6];
+// trait IsAnagram for &str {
 
-  println!("{}", Solution::trap(height));
+// }
+
+struct Solution {}
+
+
+fn main() {
+  let sol = Solution::is_anagram("ana".to_string());
+
+  println!("{:?}", sol);
 }

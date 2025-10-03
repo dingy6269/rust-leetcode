@@ -3,36 +3,50 @@ use std::process::ExitCode;
 
 impl Solution {
   pub fn group_anagrams(strs: Vec<String>) {
+    let result: HashMap<HashMap<char, i32>, Vec<String>> = HashMap::default();
+
+    for str in strs {
+      let outcome = str.as_str().count();
+
+      *result
+      .entry()
+      .and_modify(|e| {
+        
+      })
+    }
   }
 
-  pub fn is_anagram(str: String) {
-    let mut chars = HashMap::new();
+  pub fn count(s: &str) {
+    let mut counts = HashMap::new();
 
-    for char in str.chars() {
-      if !chars.contains_key(&char) {
-        chars.insert(char, 0);
-      }
-
-      let candidate =
-        chars.get(&char).unwrap_or_else(|| &0);
-
-      let increment = candidate + 1;
-      chars.insert(char, increment);
+    for ch in s.chars() {
+      *counts.entry(ch).or_insert_with(|| 0) += 1;
     }
 
-    println!("{:?}", chars);
+    println!("{:?}", counts);
   }
 }
 
-// trait IsAnagram for &str {
+pub trait CharCount {
+  fn count(&self) -> HashMap<char, i32>;
+}
 
-// }
+impl CharCount for &str {
+  fn count(&self) -> HashMap<char, i32> {
+    let mut counts = HashMap::new();
+
+    for ch in self.chars() {
+      *counts.entry(ch).or_insert_with(|| 0) += 1;
+    }
+
+    counts
+  }
+}
 
 struct Solution {}
 
-
 fn main() {
-  let sol = Solution::is_anagram("ana".to_string());
+  let sol = Solution::count("ana");
 
   println!("{:?}", sol);
 }

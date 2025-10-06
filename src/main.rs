@@ -9,21 +9,15 @@ struct Coords {
 }
 
 
+#[derive(Clone, Eq, PartialEq, Debug)]
+struct SquareMutator {
+  x: HashMap<char, i32>,
+  y: HashMap<char, i32>
+}
 
 
-impl Coords {
-  pub fn new(x: i32, y: i32) -> Self {
-    Self { x, y }
-  }
-
-  pub fn update(&mut self, direction: RawDirection) {
-    self.x = self.x + direction[0];
-    self.y = self.y + direction[1];
-  }
-
-  pub fn from_square<S: AsRef<str>>(s_: S) -> Self {
-    let s = s_.as_ref();
-
+impl SquareMutator {
+  pub fn new() -> Self {
     let mut x_map = HashMap::new();
     let mut y_map = HashMap::new();
 
@@ -38,13 +32,36 @@ impl Coords {
       y_map.insert(c, (i + 1) as i32);
     };
 
-    // a8
-    // h1
+    Self {
+      x: x_map,
+      y: y_map
+    }
+  }
 
-    // ['a', '8']
+  pub fn mutate(&self) -> (&i32, &i32) {
+    let x = self.x.get(&chars[0]).unwrap();
+    let y = self.y.get(&chars[1]).unwrap();
+
+    return (x, y)
+  }
+}
+
+impl Coords {
+  pub fn new(x: i32, y: i32) -> Self {
+    Self { x, y }
+  }
+
+  pub fn update(&mut self, direction: RawDirection) {
+    self.x = self.x + direction[0];
+    self.y = self.y + direction[1];
+  }
+
+  pub fn from_square<S: AsRef<str>>(s_: S, mutator: &SquareMutator) -> Self {
+    let s = s_.as_ref();
+
     let chars: Vec<char> = s.chars().collect();
-    let x = x_map.get(&chars[0]).unwrap();
-    let y = y_map.get(&chars[1], ).unwrap();
+    let x = mutator.x.get(&chars[0]).unwrap();
+    let y = mutator.y.get(&chars[1]).unwrap();
 
     Self::new(x.clone(), y.clone())
   }
@@ -166,8 +183,10 @@ impl Solution {
 // h1
 
 fn main() {
-  let start = Coords::from_square("a8");
-  let finish = Coords::from_square("h1");
+  let mutator = SquareMutator::new();
+
+  let start = Coords::from_square("a8", &mutator);
+  let finish = Coords::from_square("h1", &mutator);
 
   let result = Solution::king_moves(start, finish);
 }

@@ -5,13 +5,11 @@ struct Solution {}
 impl Solution {
   pub fn longest_consecutive(nums: Vec<i32>) -> i32 {
     // full value here
-    let set: HashSet<i32> = HashSet::new();
+    let set = nums.iter().cloned().collect::<HashSet<i32>>();
     let mut result: i32 = 0;
+    
     for (idx, val) in nums.iter().enumerate() {
-      // let decrement = val - 1;
-
-      if idx > 0 && !set.contains(&nums[idx - 1]) {
-        #[warn(unused_mut)]
+      if idx == 0 || !set.contains(&(nums[idx] - 1)) {
         let mut sequence = 1;
         let mut candidate = nums[idx] + sequence;
 
@@ -20,7 +18,6 @@ impl Solution {
           candidate = nums[idx] + sequence;
         }
 
-        println!("seq {:?}", sequence);
 
         result = result.max(sequence as i32);
       }

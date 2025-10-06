@@ -8,13 +8,11 @@ struct Coords {
   y: i32, // 1..=8
 }
 
-
 #[derive(Clone, Eq, PartialEq, Debug)]
 struct SquareMutator {
   x: HashMap<char, i32>,
-  y: HashMap<char, i32>
+  y: HashMap<char, i32>,
 }
-
 
 impl SquareMutator {
   pub fn new() -> Self {
@@ -24,25 +22,25 @@ impl SquareMutator {
     const x_transmute: &'static str = "abcdefgh";
     const y_transmute: &'static str = "87654321";
 
-    for (i ,c) in x_transmute.chars().enumerate() {
+    for (i, c) in x_transmute.chars().enumerate() {
       x_map.insert(c, (i + 1) as i32);
     }
 
     for (i, c) in y_transmute.chars().enumerate() {
       y_map.insert(c, (i + 1) as i32);
-    };
-
-    Self {
-      x: x_map,
-      y: y_map
     }
+
+    Self { x: x_map, y: y_map }
   }
 
-  pub fn mutate(&self) -> (&i32, &i32) {
+  pub fn mutate(&self, s_: impl AsRef<str>) -> (i32, i32) {
+    let s = s_.as_ref();
+    let chars: Vec<char> = s.chars().collect();
+
     let x = self.x.get(&chars[0]).unwrap();
     let y = self.y.get(&chars[1]).unwrap();
 
-    return (x, y)
+    return (x.clone(), y.clone());
   }
 }
 
@@ -54,16 +52,6 @@ impl Coords {
   pub fn update(&mut self, direction: RawDirection) {
     self.x = self.x + direction[0];
     self.y = self.y + direction[1];
-  }
-
-  pub fn from_square<S: AsRef<str>>(s_: S, mutator: &SquareMutator) -> Self {
-    let s = s_.as_ref();
-
-    let chars: Vec<char> = s.chars().collect();
-    let x = mutator.x.get(&chars[0]).unwrap();
-    let y = mutator.y.get(&chars[1]).unwrap();
-
-    Self::new(x.clone(), y.clone())
   }
 }
 
@@ -101,7 +89,6 @@ impl Directions {
     })
   }
 }
-
 
 // king, alone =>
 // => moves to t
@@ -178,15 +165,17 @@ impl Solution {
 // 8..1 = y
 // a..h = x
 
-
 // a8
 // h1
 
 fn main() {
   let mutator = SquareMutator::new();
 
-  let start = Coords::from_square("a8", &mutator);
-  let finish = Coords::from_square("h1", &mutator);
+  let start_m = mutator.mutate("a8");
+  let finish_m = mutator.mutate("h1");
+
+  let start = Coords::new(start_m.0, start_m.1);
+  let finish = Coords::new(finish_m.0, finish_m.1);
 
   let result = Solution::king_moves(start, finish);
 }

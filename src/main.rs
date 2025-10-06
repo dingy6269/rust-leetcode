@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::cmp;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct TreeNode {
@@ -21,35 +22,28 @@ impl TreeNode {
 pub struct Solution;
 
 impl Solution {
-  pub fn inorder_traversal(
+  pub fn max_depth(
     root: Option<Rc<RefCell<TreeNode>>>,
-  ) -> Vec<i32> {
+    depth: i32
+  ) -> i32 {
     match root {
       Some(node_rc) => {
-        let mut values = Vec::new();
         let node = node_rc.borrow();
 
-        if (node.left.is_none() && node.right.is_none()) {
-          return vec![node.val];
-        }
+        let l_count = Self::max_depth(node.left.clone(), depth + 1);
+        let r_count = Self::max_depth(node.right.clone(), depth + 1);
 
-        values.extend(Self::inorder_traversal(node.left));
-        values.extend(vec![node.val]);
-        values.extend(Self::inorder_traversal(node.right));
-
-        return values;
+        return l_count.max(r_count);
       }
-      None => return vec![],
+      None => return depth
     };
-
-    vec![]
   }
 }
 
 fn main() {
   let v: i32 = 2;
 
-  let r = Solution::inorder_traversal(Some(Rc::new(
+  let r = Solution::max_depth(Some(Rc::new(
     RefCell::new(TreeNode::new(v)),
   )));
 }

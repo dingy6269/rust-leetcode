@@ -1,49 +1,37 @@
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::cmp;
+use std::collections::HashSet;
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct TreeNode {
-  pub val: i32,
-  pub left: Option<Rc<RefCell<TreeNode>>>,
-  pub right: Option<Rc<RefCell<TreeNode>>>,
-}
-
-impl TreeNode {
-  // initialize with inline parameters
-  #[inline]
-  pub fn new(val: i32) -> Self {
-    TreeNode { val, left: None, right: None }
-  }
-}
-
-// LeetCode provides `struct Solution;` usually.
-// Add it if your file doesn't have it:
-pub struct Solution;
+struct Solution {}
 
 impl Solution {
-  pub fn max_depth(
-    root: Option<Rc<RefCell<TreeNode>>>,
-    depth: i32
-  ) -> i32 {
-    match root {
-      Some(node_rc) => {
-        let node = node_rc.borrow();
+  pub fn longest_consecutive(nums: Vec<i32>) -> i32 {
+    // full value here
+    let set: HashSet<i32> = nums.iter().cloned().collect();
+    let mut result: i32 = 0;
 
-        let l_count = Self::max_depth(node.left.clone(), depth + 1);
-        let r_count = Self::max_depth(node.right.clone(), depth + 1);
+    for (idx, val) in nums.iter().enumerate() {
+      let decrement = val - 1;
 
-        return l_count.max(r_count);
+      if (!set.contains(&decrement)) {
+        let mut sequence = 1;
+        
+
+
+        while nums
+          .get(idx + sequence)
+          .map_or(false, |v| set.contains(v))
+        {
+          sequence += 1
+        }
+
+        result = result.max(sequence as i32);
       }
-      None => return depth
-    };
+    }
+
+    result
   }
 }
 
 fn main() {
-  let v: i32 = 2;
-
-  let r = Solution::max_depth(Some(Rc::new(
-    RefCell::new(TreeNode::new(v)),
-  )));
+  let nums = vec![100, 4, 200, 1, 3, 2];
+  println!("{:#?}", Solution::longest_consecutive(nums));
 }

@@ -4,22 +4,24 @@ struct Solution {}
 
 impl Solution {
   pub fn longest_consecutive(nums: Vec<i32>) -> i32 {
-    // full value here
     let set = nums.iter().cloned().collect::<HashSet<i32>>();
     let mut result: i32 = 0;
     
-    for (idx, val) in nums.iter().enumerate() {
-      if idx == 0 || !set.contains(&(nums[idx] - 1)) {
-        let mut sequence = 1;
-        let mut candidate = nums[idx] + sequence;
+    for &num in &nums {
+      if !set.contains(&(num - 1)) {
+        let mut candidate = num + 1;
 
-        while set.contains(&candidate) {
-          sequence += 1;
-          candidate = nums[idx] + sequence;
+        loop {
+          if !set.contains(&candidate) {
+            break;
+          }
+
+          candidate += 1;
         }
 
+        let delta = candidate - num;
 
-        result = result.max(sequence as i32);
+        result = result.max(delta);
       }
     }
 

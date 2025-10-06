@@ -9,16 +9,16 @@ struct Coords {
 }
 
 // type Directions = HashMap<String, [i32; 2]>;
-
+type RawDirection = [i32; 2];
 
 struct Directions {
-  map: HashMap<String, [i32; 2]>
+  map: HashMap<&'static str, RawDirection>
 }
 
-impl Directions {
-  pub fn new() {
 
-    let map = HashMap::new();
+impl Directions {
+  pub fn new() -> Self {
+    let mut map = HashMap::new();
 
     map.insert("L", [-1, 0]);
     map.insert("R", [1, 0]);
@@ -29,35 +29,28 @@ impl Directions {
     map.insert("RU", [1, 1]);
     map.insert("RD", [1, -1]);
 
-    Sefl {
+    Self {
       map
     }
-  } 
+  }
+
+  pub fn transmute(&self, direction: impl AsRef<str>) -> RawDirection {
+    let dir =  direction.as_ref();
+
+    *self.map.get(dir).unwrap_or_else(|| {
+      panic!("Invalid direction: {}", dir);
+    })
+  }
 }
 
-const DIRECTIONS: [&'static str; 8] = [
-  "L",
-  "R",
-  "U",
-  "D",
-  "LU",
-  "LD",
-  "RU",
-  "RD"
-];
-
-// const Map= {
-
-// }
 
 impl Coords {
   pub fn new(x: i32, y: i32) -> Self {
 
-
-    Self { x, y, map }
+    Self { x, y }
   }
 
-  pub fn update(dir: String)  {
+  pub fn update(dir: impl AsRef<str>)  {
 
   }
 }

@@ -8,6 +8,48 @@ struct Coords {
   y: i32, // 1..=8
 }
 
+
+
+
+impl Coords {
+  pub fn new(x: i32, y: i32) -> Self {
+    Self { x, y }
+  }
+
+  pub fn update(&mut self, direction: RawDirection) {
+    self.x = self.x + direction[0];
+    self.y = self.y + direction[1];
+  }
+
+  pub fn from_square<S: AsRef<str>>(s_: S) -> Self {
+    let s = s_.as_ref();
+
+    let mut x_map = HashMap::new();
+    let mut y_map = HashMap::new();
+
+    const x_transmute: &'static str = "abcdefgh";
+    const y_transmute: &'static str = "87654321";
+
+    for (i ,c) in x_transmute.chars().enumerate() {
+      x_map.insert(c, (i + 1) as i32);
+    }
+
+    for (i, c) in y_transmute.chars().enumerate() {
+      y_map.insert(c, (i + 1) as i32);
+    };
+
+    // a8
+    // h1
+
+    // ['a', '8']
+    let chars: Vec<char> = s.chars().collect();
+    let x = x_map.get(&chars[0]).unwrap();
+    let y = y_map.get(&chars[1], ).unwrap();
+
+    Self::new(x.clone(), y.clone())
+  }
+}
+
 // type Directions = HashMap<String, [i32; 2]>;
 type RawDirection = [i32; 2];
 
@@ -43,16 +85,6 @@ impl Directions {
   }
 }
 
-impl Coords {
-  pub fn new(x: i32, y: i32) -> Self {
-    Self { x, y }
-  }
-
-  pub fn update(&mut self, direction: RawDirection) {
-    self.x = self.x + direction[0];
-    self.y = self.y + direction[1];
-  }
-}
 
 // king, alone =>
 // => moves to t
@@ -126,9 +158,16 @@ impl Solution {
 
 // dx = tx - sx
 
+// 8..1 = y
+// a..h = x
+
+
+// a8
+// h1
+
 fn main() {
-  let start = Coords::new(1, 1);
-  let finish = Coords::new(8, 8);
+  let start = Coords::from_square("a8");
+  let finish = Coords::from_square("h1");
 
   let result = Solution::king_moves(start, finish);
 }

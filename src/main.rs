@@ -10,41 +10,30 @@ impl Solution {
     n: i32, m: i32, a: i32
   ) -> i32 {
     // 36
+    // x >>>
+    // y >>> 
     let square = n * m;
     // 16
     let plot = a * a;
     // 3
+
+    let base = (
+      square * 4
+    ) as f64 / (plot * 4) as f64;
+
+    // we would have 3
+    let mut solution = base.ceil() as i32;
+
+    while solution % 2 != 0 {
+      solution += 1
+    };
     
-
-    // -----
-    let mut left = 0;
-    let mut right = numbers.len() - 1;
-
-    while left <= right {
-      let candidate = numbers[left] + numbers[right];
-
-      if candidate == target {
-        let (l, r): (i32, i32) =
-          ((left + 1) as i32, (right + 1) as i32);
-
-        return vec![l, r];
-      };
-
-      if candidate > target {
-        right -= 1
-      }
-
-      if candidate < target {
-        left += 1
-      }
-    }
-
-    panic!("shouldn't happen really");
-  }
+    solution
+}
 }
 
 fn main() {
-  let result = Solution::square();
+  let result = Solution::square(6, 6, 4);
 
   println!("{:?}", result);
 }

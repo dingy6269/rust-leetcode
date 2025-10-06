@@ -46,12 +46,12 @@ impl Directions {
 
 impl Coords {
   pub fn new(x: i32, y: i32) -> Self {
-
     Self { x, y }
   }
 
-  pub fn update(dir: impl AsRef<str>)  {
-
+  pub fn update(&mut self, direction: RawDirection)  {
+    self.x = self.x + direction[0];
+    self.y = self.y + direction[1];
   }
 }
 

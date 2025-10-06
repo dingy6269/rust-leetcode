@@ -79,13 +79,22 @@ impl Coords {
 // [8, 8]
 
 impl Solution {
-  pub fn recycle_board(initial: Coords, end: Coords) -> i32 {
+  pub fn king_moves(s: Coords, t: Coords) -> i32 {
+    // so we find deltas
+    let mut dx = t.x - s.x;
+    let mut dy = t.y - s.y;
+    let moves = Vec::new();
+
+
     while initial.x != end.x && 
     initial.y != end.y {
 
     };
   }
 }
+
+// dx = tx - sx
+
 
 fn main() {
   let result = Solution::recycle_board();

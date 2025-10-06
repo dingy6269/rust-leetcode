@@ -13,9 +13,14 @@ impl Solution {
     };
 
     // 1
-    let mut left = 1;
+
+    let ileft = 1;
     // 7
-    let mut right = w - 1;
+    let iright = w - 1;
+
+    let mut left = ileft;
+    // 7
+    let mut right = iright;
 
     let mut results: Vec<(i32, i32)> = Vec::new();
 
@@ -37,6 +42,38 @@ impl Solution {
         right -=1;
       }
     }
+
+
+    let mut ileft = 1;
+    // 7
+    let mut iright = w - 1;
+
+    println!("l {:?}", left);
+    println!("r {:?}", right);
+
+
+    println!("il {:?}", ileft);
+    println!("ir {:?}", iright);
+
+    while (left < iright && right > ileft) {
+      if (!is_odd(left)) {
+        left += 1
+      };
+
+      if (!is_odd(right)) {
+        right -= 1
+      };
+
+      // 2 6 => 3 5
+      if (is_odd(left) && is_odd(right)) {
+        results.push((left, right));
+
+        left += 1;
+        right -=1;
+      }
+    }
+    // 4 4 => 5 3k
+    // while (left )
 
     println!("{:?}", results);
 

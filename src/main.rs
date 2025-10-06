@@ -1,38 +1,41 @@
-use std::collections::HashSet;
-
 struct Solution {}
 
 impl Solution {
-  pub fn longest_consecutive(nums: Vec<i32>) -> i32 {
-    let set = nums.iter().cloned().collect::<HashSet<i32>>();
-    let mut result: i32 = 0;
-    
-    for &num in &nums {
-      if !set.contains(&(num - 1)) {
-        let mut candidate = num + 1;
+  pub fn two_sum(
+    numbers: Vec<i32>,
+    target: i32,
+  ) -> Vec<i32> {
+    let mut left = 0;
+    let mut right = numbers.len() - 1;
 
-        loop {
-          if !set.contains(&candidate) {
-            break;
-          }
+    while left <= right {
+      let candidate = numbers[left] + numbers[right];
 
-          candidate += 1;
-        }
+      if candidate == target {
+        let (l, r): (i32, i32) =
+          ((left + 1) as i32, (right + 1) as i32);
 
-        let delta = candidate - num;
+        return vec![l, r];
+      };
 
-        result = result.max(delta);
+      if candidate > target {
+        right -= 1
+      }
+
+      if candidate < target {
+        left += 1
       }
     }
 
-    result
+    panic!("shouldn't happen really");
   }
 }
 
 fn main() {
-  let nums = vec![100, 4, 200, 1, 3, 2];
-  
-  let result = Solution::longest_consecutive(nums);
+  let numbers = vec![2, 7, 11, 15];
+  let target = 9;
+
+  let result = Solution::two_sum(numbers, target);
 
   println!("{:?}", result);
 }

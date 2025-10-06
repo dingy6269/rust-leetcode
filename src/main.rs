@@ -1,39 +1,101 @@
+use std::collections::HashMap;
+
 struct Solution {}
 
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+struct Coords {
+  x: i32, // 1..=8
+  y: i32 // 1..=8
+}
 
-// square: n x m
-// plot: a x a
+// type Directions = HashMap<String, [i32; 2]>;
 
+
+struct Directions {
+  map: HashMap<String, [i32; 2]>
+}
+
+impl Directions {
+  pub fn new() {
+
+    let map = HashMap::new();
+
+    map.insert("L", [-1, 0]);
+    map.insert("R", [1, 0]);
+    map.insert("U", [0, 1]);
+    map.insert("D", [0, -1]);
+    map.insert("LU", [-1, 1]);
+    map.insert("LD", [-1, -1]);
+    map.insert("RU", [1, 1]);
+    map.insert("RD", [1, -1]);
+
+    Sefl {
+      map
+    }
+  } 
+}
+
+const DIRECTIONS: [&'static str; 8] = [
+  "L",
+  "R",
+  "U",
+  "D",
+  "LU",
+  "LD",
+  "RU",
+  "RD"
+];
+
+// const Map= {
+
+// }
+
+impl Coords {
+  pub fn new(x: i32, y: i32) -> Self {
+
+
+    Self { x, y, map }
+  }
+
+  pub fn update(dir: String)  {
+
+  }
+}
+
+// king, alone =>
+// => moves to t
+// from s to t (with min amount of moves)
+//
+
+// a8
+// h1
+
+// PREVIOSUYLLY!!!
+// a ... h === y
+// 1 ..8 == x
+
+// NEW
+
+// 1..8 == x
+// 1..8 == y
+
+// 1-1
+// 8-8
+
+// [1, 1]
+// [8, 8]
 
 impl Solution {
-  pub fn square(
-    n: i32, m: i32, a: i32
-  ) -> i32 {
-    // 36
-    // x >>>
-    // y >>> 
-    let square = n * m;
-    // 16
-    let plot = a * a;
-    // 3
+  pub fn recycle_board(initial: Coords, end: Coords) -> i32 {
+    while initial.x != end.x && 
+    initial.y != end.y {
 
-    let base = (
-      square * 4
-    ) as f64 / (plot * 4) as f64;
-
-    // we would have 3
-    let mut solution = base.ceil() as i32;
-
-    while solution % 2 != 0 {
-      solution += 1
     };
-    
-    solution
-}
+  }
 }
 
 fn main() {
-  let result = Solution::square(6, 6, 4);
+  let result = Solution::recycle_board();
 
   println!("{:?}", result);
 }

@@ -5,16 +5,15 @@ struct Solution {}
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 struct Coords {
   x: i32, // 1..=8
-  y: i32 // 1..=8
+  y: i32, // 1..=8
 }
 
 // type Directions = HashMap<String, [i32; 2]>;
 type RawDirection = [i32; 2];
 
 struct Directions {
-  map: HashMap<&'static str, RawDirection>
+  map: HashMap<&'static str, RawDirection>,
 }
-
 
 impl Directions {
   pub fn new() -> Self {
@@ -29,13 +28,14 @@ impl Directions {
     map.insert("RU", [1, 1]);
     map.insert("RD", [1, -1]);
 
-    Self {
-      map
-    }
+    Self { map }
   }
 
-  pub fn transmute(&self, direction: impl AsRef<str>) -> RawDirection {
-    let dir =  direction.as_ref();
+  pub fn transmute(
+    &self,
+    direction: impl AsRef<str>,
+  ) -> RawDirection {
+    let dir = direction.as_ref();
 
     *self.map.get(dir).unwrap_or_else(|| {
       panic!("Invalid direction: {}", dir);
@@ -43,13 +43,12 @@ impl Directions {
   }
 }
 
-
 impl Coords {
   pub fn new(x: i32, y: i32) -> Self {
     Self { x, y }
   }
 
-  pub fn update(&mut self, direction: RawDirection)  {
+  pub fn update(&mut self, direction: RawDirection) {
     self.x = self.x + direction[0];
     self.y = self.y + direction[1];
   }
@@ -79,25 +78,57 @@ impl Coords {
 // [8, 8]
 
 impl Solution {
-  pub fn king_moves(s: Coords, t: Coords) -> i32 {
+  pub fn king_moves(s: Coords, t: Coords) -> () {
     // so we find deltas
     let mut dx = t.x - s.x;
     let mut dy = t.y - s.y;
-    let moves = Vec::new();
+    let mut moves = Vec::new();
 
+    // dx, dy
+    while dx != 0 || dy != 0 {
+      let mut mv = String::with_capacity(2);
 
-    while initial.x != end.x && 
-    initial.y != end.y {
+      if dx > 0 {
+        mv.push('R');
+        dx -= 1;
+      } else if dx < 0 {
+        mv.push('L');
+        dx += 1;
+      }
 
-    };
+      // -8 => -7
+      if dy > 0 {
+        mv.push('D');
+        dy -= 1;
+      } else if dy < 0 {
+        mv.push('U');
+        dy += 1;
+      }
+
+      moves.push(mv);
+    }
+
+    println!("{}", moves.len());
+
+    for mv in moves {
+      println!("{}", mv);
+    }
+
+    // so int that case
+    // instead of comparing intiail and end
+    // we can create "delta"
+    // and allocate the futher stuff
+    // to the delta
+
+    // while initial.x != end.x && initial.y != end.y {}
   }
 }
 
 // dx = tx - sx
 
-
 fn main() {
-  let result = Solution::recycle_board();
+  let start = Coords::new(1, 1);
+  let finish = Coords::new(8, 8);
 
-  println!("{:?}", result);
+  let result = Solution::king_moves(start, finish);
 }

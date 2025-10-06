@@ -1,10 +1,22 @@
 struct Solution {}
 
+
+// square: n x m
+// plot: a x a
+
+
 impl Solution {
-  pub fn two_sum(
-    numbers: Vec<i32>,
-    target: i32,
-  ) -> Vec<i32> {
+  pub fn square(
+    n: i32, m: i32, a: i32
+  ) -> i32 {
+    // 36
+    let square = n * m;
+    // 16
+    let plot = a * a;
+    // 3
+    
+
+    // -----
     let mut left = 0;
     let mut right = numbers.len() - 1;
 
@@ -32,10 +44,7 @@ impl Solution {
 }
 
 fn main() {
-  let numbers = vec![2, 7, 11, 15];
-  let target = 9;
-
-  let result = Solution::two_sum(numbers, target);
+  let result = Solution::square();
 
   println!("{:?}", result);
 }

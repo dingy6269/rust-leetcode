@@ -1,127 +1,62 @@
-use std::{collections::HashMap, panic::resume_unwind};
 
-struct Solution {}
-
-pub fn is_odd(x: i32) -> bool {
-  x % 2 == 0
+#[derive(Debug, PartialEq, Eq)]
+struct MinStack {
+  values: Vec<i32>,
+  head: Option<i32>,
+  previous: Option<i32>
 }
 
-impl Solution {
-  pub fn codeforces_4a(w: i32) -> bool {
-    if (!is_odd(w)) {
-      return false;
-    };
-
-    // 1
-
-    let ileft = 1;
-    // 7
-    let iright = w - 1;
-
-    let mut left = ileft;
-    // 7
-    let mut right = iright;
-
-    let mut results: Vec<(i32, i32)> = Vec::new();
-
-    // 4 4
-    while (left <= right) {
-      if (!is_odd(left)) {
-        left += 1
-      };
-
-      if (!is_odd(right)) {
-        right -= 1
-      };
-
-      // 2 6 => 3 5
-      if (is_odd(left) && is_odd(right)) {
-        results.push((left, right));
-
-        left += 1;
-        right -=1;
-      }
+impl MinStack {
+  fn new() -> Self {
+    Self {
+      values: vec![],
+      head: None,
+      previous: None
     }
+  }
 
+  fn push(&mut self, val: i32) {
+    self.values.push(val);
+    
+    self.previous = self.head;
+    self.head = Some(val);
+  }
 
-    let mut ileft = 1;
-    // 7
-    let mut iright = w - 1;
+  fn pop(&mut self) {
+    self.values.pop();
+    self.head = self.previous;
+    self.previous = None;
+  }
 
-    println!("l {:?}", left);
-    println!("r {:?}", right);
+  fn top(&self) -> i32 {
+    self.head.unwrap_or_else(|| {
+      panic!("shoudn't happen here")
+    })
+  }
 
+  fn get_min(&self) -> i32 {
+    let value = self.values.iter().min();
 
-    println!("il {:?}", ileft);
-    println!("ir {:?}", iright);
-
-    while (left < iright && right > ileft) {
-      if (!is_odd(left)) {
-        left += 1
-      };
-
-      if (!is_odd(right)) {
-        right -= 1
-      };
-
-      // 2 6 => 3 5
-      if (is_odd(left) && is_odd(right)) {
-        results.push((left, right));
-
-        left += 1;
-        right -=1;
-      }
-    }
-    // 4 4 => 5 3k
-    // while (left )
-
-    println!("{:?}", results);
-
-    results.len() > 0
+    value.unwrap_or_else(|| {
+      panic!("Shouldn't happen")
+    }).clone()
   }
 }
 
-// two pointers => two times
-// without colliding
-
-// single watermln
-// two instances
-
-// biggest (max)
-// computed => "w"
-
-// tried to divide (between 2)
-// constrains:
-// 1. % 2 == 0 (can be diff size) (yeah and >0 each)
-
-// => bool
-
-// so it can be 4 and 4
-// 2 and 6
-// 6 and 2
-//
-
-// (9) the initial value sohuld be % 2 == 0
-// (10)
-/// 2 8
-/// 4 6
-/// 6 4
-/// 8 2
-///
-/// 2
-/// 1 1
 
 fn main() {
+  let mut stack = MinStack::new();
 
-    let _ = Solution::codeforces_4a(8);
-}
+  stack.push(-2);
+  stack.push(0);
+  stack.push(-3);
 
-#[cfg(test)]
-mod tests {
-  use crate::Solution;
+  let min = stack.get_min();
 
-  #[test]
-  pub fn case_1() {
-    let result = Solution::codeforces_4a(8);
-  }
+  println!("{:?}", min);
+
+  stack.pop();
+  
+  println!("{:?}", stack.top());
+  println!("{:?}", stack.get_min())
 }

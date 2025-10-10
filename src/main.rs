@@ -1,45 +1,35 @@
 
 #[derive(Debug, PartialEq, Eq)]
 struct MinStack {
-  values: Vec<i32>,
-  head: Option<i32>,
-  previous: Option<i32>
+  vals: Vec<i32>,
+  mins: Vec<i32>
 }
 
 impl MinStack {
   fn new() -> Self {
     Self {
-      values: vec![],
-      head: None,
-      previous: None
+      vals: vec![],
+      mins: vec![]
     }
   }
 
   fn push(&mut self, val: i32) {
-    self.values.push(val);
-    
-    self.previous = self.head;
-    self.head = Some(val);
+    self.vals.push(val);
+    self.mins.
   }
 
   fn pop(&mut self) {
-    self.values.pop();
-    self.head = self.previous;
-    self.previous = None;
+    self.vals.pop();
   }
 
   fn top(&self) -> i32 {
-    self.head.unwrap_or_else(|| {
-      panic!("shoudn't happen here")
-    })
-  }
+    *self.vals.last().expect("no value error")
+    }
 
   fn get_min(&self) -> i32 {
-    let value = self.values.iter().min();
+    let value = self.vals.iter().min();
 
-    value.unwrap_or_else(|| {
-      panic!("Shouldn't happen")
-    }).clone()
+    *value.expect("no value error")
   }
 }
 

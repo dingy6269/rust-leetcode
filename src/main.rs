@@ -1,37 +1,80 @@
-use std::collections::HashSet;
+// car fleet;
+
+// n cars (from mile 0) travellign to target
+
+// pos[]
+// speed[]
+
+// cannot catch up
+
+// speed of car fleet = minimum speed of any car
+
+// (if a car to traget it still a fleet)
+
+// target 12
+// position 10, 8, 0, 5, 3
+// speed 2, 4, 1, 1, 3
+
+// 3
+
+// 10 + 2
+// 8  + 4
+// ==>> 12
+
+// 5 + 1
+// 3 + 3
+// => 6 (1)
+
+// -----
+// target 100
+// 0, 2, 4
+// 4, 2, 1
+// =>
+// 4, 4, 5
+// 8, 6, 6
+
+use std::collections::{HashMap, HashSet};
 
 struct Solution {}
 
-
-// PRODUCT OF ARRAY EXCEPT SELF
-
 impl Solution {
-  pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
-    let mut sum: Vec<i32> = vec![1; nums.len()];
+  pub fn car_fleet(
+    target: i32,
+    position: Vec<i32>,
+    speed: Vec<i32>,
+  ) -> i32 {
+    let mut map: HashMap<i32, Vec<i32>> = HashMap::new();
 
-    // 6 * 4 == 24
-    // 2 * 3 * 4
+    for (idx, pos) in position.iter().enumerate() {
+      let npos = pos + speed[idx];
 
-    for (i, _) in nums.iter().enumerate() {
-      for (j, v) in nums.iter().enumerate() {
-        if i == j {
-          continue 
-        }
+      println!("npos {:?}", npos);
 
-        sum[i] *= v;
-      }
+      map
+        .entry(npos)
+        .and_modify(|v| v.push(idx as i32))
+        .or_insert(vec![idx as i32]);
+      // .or_default();
     }
 
-   sum
+    println!("{:#?}", map);
+
+    println!("{:#?}", map.len());
+
+    return 0;
   }
 }
 
-
 fn main() {
-  let nums: Vec<i32> = vec![1, 2, 3, 4];
+  // Solution::car_fleet(
+  //   12,
+  //   vec![10, 8, 0, 5, 3],
+  //   vec![2, 4, 1, 1, 3],
+  // );
 
-  let sol = Solution::product_except_self(nums);
-
-  println!("{:#?}", sol);
+  Solution::car_fleet(
+    100,
+    vec![0, 2, 4],
+    vec![4, 2, 1],
+  );
 }
-

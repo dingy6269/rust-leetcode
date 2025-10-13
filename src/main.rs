@@ -6,21 +6,32 @@ struct Solution {}
 // PRODUCT OF ARRAY EXCEPT SELF
 
 impl Solution {
-  pub fn contains_dublicate(nums: Vec<i32>) -> bool {
-    let mut set = HashSet::new();
+  pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
+    let mut sum: Vec<i32> = vec![1; nums.len()];
 
-    for num in nums {
-      if set.contains(&num) {
-        return true
-      };
-      set.insert(num);
-    };
+    // 6 * 4 == 24
+    // 2 * 3 * 4
 
-    false
+    for (i, _) in nums.iter().enumerate() {
+      for (j, v) in nums.iter().enumerate() {
+        if i == j {
+          continue 
+        }
+
+        sum[i] *= v;
+      }
+    }
+
+   sum
   }
-
 }
+
 
 fn main() {
-  let
+  let nums: Vec<i32> = vec![1, 2, 3, 4];
+
+  let sol = Solution::product_except_self(nums);
+
+  println!("{:#?}", sol);
 }
+

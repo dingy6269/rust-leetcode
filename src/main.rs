@@ -35,8 +35,6 @@
 
 // Дединский курс
 
-use std::collections::{HashMap, HashSet};
-
 struct Solution {}
 
 impl Solution {
@@ -45,45 +43,56 @@ impl Solution {
     position: Vec<i32>,
     speed: Vec<i32>,
   ) -> i32 {
-    let cars = position
+    let mut cars = position
       .iter()
       .enumerate()
       .map(|(idx, pos)| (pos, &speed[idx]))
       .collect::<Vec<(&i32, &i32)>>();
 
-    let mut stack : Vec<i32> = Vec::new();
+    // we need to sort it
+    // yeah but why?
 
+    //
+
+    cars.sort_by(|a, b| a.cmp(b));
+
+    let mut stack: Vec<i32> = Vec::new();
 
     for &(pos, speed) in cars.iter().rev() {
       println!("pos={:?}, speed={:?}", pos, speed);
-      let time = (target - pos) / speed;
+      let time = (target - pos) as f64 / (*speed as f64);
 
+      // 4 / 3 (rust tells 1) // well it is 1.1111
       println!("time={:?}", time);
       println!("stack={:?}", stack);
 
       if let Some(&last) = stack.last() {
-        if time <= last {
-          continue
+        if time <= last as f64 {
+          continue;
         }
       }
 
-      stack.push(time);
+      // ???
+      stack.push(time as i32);
+      // stack.push(time);
 
       println!("--------");
-    };
-
-
+    }
 
     return stack.len() as i32;
   }
 }
 
 fn main() {
-  Solution::car_fleet(
-    12,
-    vec![10, 8, 0, 5, 3, 4],
-    vec![2, 4, 1, 1, 3, 1],
-  );
+  // Solution::car_fleet(
+  //   12,
+  //   vec![10, 8, 0, 5, 3, 4],
+  //   vec![2, 4, 1, 1, 3, 1],
+  // );
 
   // Solution::car_fleet(100, vec![0, 2, 4], vec![4, 2, 1]);
+
+  let sol =  Solution::car_fleet(10, vec![6, 8], vec![3, 2]);
+
+  println!("{:?}", sol);
 }

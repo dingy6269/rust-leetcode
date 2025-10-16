@@ -7,41 +7,46 @@
 // 5
 // 4 (including kate)
 
+use std::collections::HashSet;
 
-enum Command {
-  Positive,
-  Negative,
-  Message { sender: String, name: String }
-}
+fn solution(commands: Vec<&str>) -> i32 {
+  let mut people: HashSet<&str> = HashSet::new();
+  let mut result: i32 = 0;
 
-fn solution(commands: Vec<&str>) {
   for cmd in commands {
     match cmd.chars().next() {
-      Some('+') => Command::Positive,
-      Some('-') => Command::Negative,
+      Some('+') => {
+        people.insert(&cmd[1..]);
+      }
+      Some('-') => {
+        people.remove(&cmd[1..]);
+      }
       _ => {
-        if let Some((sender, message)) = cmd.split_once(":") {
-          Command::Message {
-            sender: sender.to_string(), 
-            name: message.to_string()
-          }
-        }
-        else {
-          panic!("Invalid format: {}" , cmd);
+        if let Some((sender, message)) = cmd.split_once(":")
+        {
+          let tmp = (message.len() * people.len());
+          result += tmp as i32;
+        } else {
+          panic!("Invalid format: {}", cmd);
         }
       }
-  };
-
+    };
   }
+  result
 }
 
-
 fn main() {
-  let commands: Vec<&str> = vec![
-        "+Mike", "Mike:hello", "+Kate", "+Dmitry",
-        "-Dmitry", "Kate:hi", "-Kate"
-    ];
+  let commands = vec![
+    "+Mike",
+    "-Mike",
+    "+Mike",
+    "Mike:Hi   I am here",
+    "-Mike",
+    "+Kate",
+    "-Kate",
+  ];
 
+  let sol = solution(commands);
 
- solution(commands);
+  println!("{}", sol);
 }

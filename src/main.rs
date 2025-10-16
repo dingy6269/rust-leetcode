@@ -8,15 +8,16 @@
 // 4 (including kate)
 
 use std::collections::HashSet;
+use std::io::{self, BufRead};
 
-fn solution(commands: Vec<&str>) -> i32 {
-  let mut people: HashSet<&str> = HashSet::new();
+fn solution(commands: Vec<String>) -> i32 {
+  let mut people: HashSet<String> = HashSet::new();
   let mut result: i32 = 0;
 
   for cmd in commands {
     match cmd.chars().next() {
       Some('+') => {
-        people.insert(&cmd[1..]);
+        people.insert(cmd[1..].to_string());
       }
       Some('-') => {
         people.remove(&cmd[1..]);
@@ -36,15 +37,15 @@ fn solution(commands: Vec<&str>) -> i32 {
 }
 
 fn main() {
-  let commands = vec![
-    "+Mike",
-    "-Mike",
-    "+Mike",
-    "Mike:Hi   I am here",
-    "-Mike",
-    "+Kate",
-    "-Kate",
-  ];
+  let mut input = String::new();
+  let stdin = io::stdin();
+  let mut commands: Vec<String> = vec![];
+
+  for line in stdin.lock().lines() {
+    let line = line.unwrap();
+
+    commands.push(line);
+  }
 
   let sol = solution(commands);
 

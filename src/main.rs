@@ -21,7 +21,7 @@ use std::io::{self, BufRead};
 // or not write
 
 fn solution(nums: Vec<i32>) -> i32 {
-  if nums.iter().filter(|&&x| x == 1).count() > 2 {
+  if nums.iter().filter(|&&x| x == 1).count() >= 2 {
     1
   } else {
     0
@@ -50,6 +50,8 @@ fn main() {
         .collect();
 
     result += solution(nums);
+
+    n -= 1;
   }
 
   println!("{}", result);

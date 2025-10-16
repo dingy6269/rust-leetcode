@@ -14,36 +14,38 @@ use std::collections::HashSet;
 use std::io::{self, BufRead};
 
 
-// M * N cells
-// 2 * 1 cell
-// can be TURNED
+// next round if
+// >= points then another guy who k place
+// IF (!!) his points are > 0
 
-//  1. D lie on the two cells
-//  3. do not intersect
-//  4. each domino lie inddie the board (with collisions)
+// n guys
+// (with points)
+
+// 8 5
+// 10 9 8 7 7 7 5 5
 
 
 
-fn solution(m: i32, n: i32) -> i32 {
-  let mul = m * n;
-  let dom = 2 * 1;
+fn solution(nums: Vec<i32>, k: usize) -> i32 {
+  let mut count = 0;
 
-  return (mul as f64 / dom as f64).floor() as i32;
+  k.saturating_sub
+
+  for num in &nums {
+    if *num >= nums[k - 1] && *num > 0 {
+      count += 1;
+    }
+  };
+
+  count
 }
 
 fn main() {
-  let (m, n) = input_tuple_i32();
+  let (n, k) = input_tuple_i32();
 
+  let points = input_vec_i32();
 
-  let sol = solution(m, n);
-
-  send(sol);
-}
-
-
-
-fn send<T>(data: T) where T: std::fmt::Display {
-  println!("{}", data);
+  println!("{}", solution(points, k as usize));
 }
 
 

@@ -7,47 +7,37 @@
 // 5
 // 4 (including kate)
 
+
+// to long - length > than 10 symbols
+// too
+
 use std::collections::HashSet;
 use std::io::{self, BufRead};
 
-fn solution(commands: Vec<String>) -> i32 {
-  let mut people: HashSet<String> = HashSet::new();
-  let mut result: i32 = 0;
+fn solution(line: String) -> String {
+  if (line.len() > 10) {
+    let b = line.trim().as_bytes();
 
-  for cmd in commands {
-    match cmd.chars().next() {
-      Some('+') => {
-        people.insert(cmd[1..].to_string());
-      }
-      Some('-') => {
-        people.remove(&cmd[1..]);
-      }
-      _ => {
-        if let Some((sender, message)) = cmd.split_once(":")
-        {
-          let tmp = (message.len() * people.len());
-          result += tmp as i32;
-        } else {
-          panic!("Invalid format: {}", cmd);
-        }
-      }
-    };
+    return format!("{}{}{}", b[0] as char, b.len() - 2, b[b.len() -1] as char);
+  } else {
+    return line;
   }
-  result
 }
 
 fn main() {
   let mut input = String::new();
-  let stdin = io::stdin();
-  let mut commands: Vec<String> = vec![];
 
-  for line in stdin.lock().lines() {
-    let line = line.unwrap();
+  io::stdin().read_line(&mut input).unwrap();
 
-    commands.push(line);
+  let mut n: i32 = input.trim().parse().unwrap();
+
+
+  while (n > 0) {
+    let mut t = String::new();
+    io::stdin().read_line(&mut t).unwrap();
+
+    println!("{}", solution(t));
+
+    n -= 1;
   }
-
-  let sol = solution(commands);
-
-  println!("{}", sol);
 }

@@ -13,34 +13,44 @@
 use std::collections::HashSet;
 use std::io::{self, BufRead};
 
-fn solution(line: String) -> String {
-  if (line.len() > 10) {
-    let b = line.trim().as_bytes();
 
-    format!(
-      "{}{}{}",
-      b[0] as char,
-      b.len() - 2,
-      b[b.len() - 1] as char
-    )
+// p v t
+// n tasks
+
+// at least (2) got it and sure with solution
+// or not write
+
+fn solution(nums: Vec<i32>) -> i32 {
+  if nums.iter().filter(|&&x| x == 1).count() > 2 {
+    1
   } else {
-    line
+    0
   }
+  
 }
 
 fn main() {
   let mut input = String::new();
+  let mut result: i32 = 0;
 
   io::stdin().read_line(&mut input).unwrap();
 
   let mut n: i32 = input.trim().parse().unwrap();
 
   while (n > 0) {
-    let mut t = String::new();
-    io::stdin().read_line(&mut t).unwrap();
+    let mut input = String::new();
+ 
+    io::stdin().read_line(
+        &mut input
+    ).expect("Failed to read line");
+ 
+ 
+    let nums: Vec<i32> = input.split_whitespace()
+        .map(|s| s.parse().expect("Not an integer!"))
+        .collect();
 
-    println!("{}", solution(t));
-
-    n -= 1;
+    result += solution(nums);
   }
+
+  println!("{}", result);
 }

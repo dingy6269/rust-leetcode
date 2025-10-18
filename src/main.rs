@@ -50,6 +50,26 @@ impl Solution {
 
     dbg!(mid_answer);
 
+    let arr = matrix[mid_answer];
+
+    let mut left = 0;
+    let mut right = arr.len() - 1;
+
+    while left <= right {
+        let mut mid = (left + right) / 2;
+
+        if (target > arr[mid]) {
+            left = mid + 1 
+        }
+
+        if (target < arr[mid]) {
+            right = mid - 1
+        }
+
+        if (target == arr[mid]) {
+            return true
+        }
+    }
 
     false
   }

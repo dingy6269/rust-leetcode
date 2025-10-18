@@ -10,29 +10,75 @@ struct Solution;
 
 
 impl Solution {
-    pub fn daily_temperatures(temps: Vec<i32>) -> () {
-        let mut result = vec![];
+    pub fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {
+        // 2
+        let corr = h as f64 / (piles.len() as f64);
 
-        for (i, val) in temps.iter().enumerate() {
-            let mut count = 0;
+        let min = i32::MAX;
+        let max = i32::MIN;
 
-            for j in i..(temps.len() -1) {
-                if temps[j] <= *val {
-                    count += 1;
-                } else {
-                    break;
-                }
-            };
+        for (i, pile) in piles.into_iter().enumerate() {
+            let cel = pile as f64 / corr;
 
-
-            result.push(count);
-        }
-        // temps
-
-        println!("{:?}", result);
+            min = min.min(cel.floor() as i32);
+            max = max.max(cel.ceil() as i32);
+        };
     }
 }
 
 fn main() {
-    Solution::daily_temperatures(vec![73,74,75,71,69,72,76,73]);
+
 }
+
+// [3, 6, 7, 11]
+
+// 3 
+
+// 4
+// 2
+
+// 4
+// 3
+
+// 4
+// 4
+// 3
+
+
+// corr h / len
+
+// 8 / 4 = 2
+
+
+// 1.5
+// 3
+// 3.5
+// 5.5
+
+// 1..6
+
+// =====
+
+// 5 /5 = 1
+
+// 30
+// 11
+// 23
+// 4 
+// 20 
+
+// =============
+
+// corr h / len 
+
+// 5 / 5 == 1
+
+// 30 ?? 1 (mod)
+// 30
+
+// 11 ?? 1 (mod)
+
+// corr h / len
+
+// 6 / 5 == 1.25
+// 

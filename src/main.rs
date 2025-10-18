@@ -51,7 +51,8 @@ fn solution(mut nodes: Vec<String>) -> i32 {
         y_vec[i] = Some(unit);
       } else {
         if unit != y_vec[i].unwrap() {
-          y_count -= 1; // ??
+          y_count = y_count.saturating_sub(1);
+          y_vec[i] = Some('-');
         }
       }
 
@@ -59,12 +60,18 @@ fn solution(mut nodes: Vec<String>) -> i32 {
         x_vec[j] = Some(unit);
       } else {
         if chars[j] != x_vec[j].unwrap() {
-          x_count -= 1;
+          x_count = x_count.saturating_sub(1);
           // ??
         }
       }
     }
   }
+
+//   dbg!(x_count);
+//   dbg!(y_count);
+
+//   dbg!(x_vec);
+//   dbg!(y_vec);
 
   (x_count + y_count) as i32
 }

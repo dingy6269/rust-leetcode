@@ -2,15 +2,10 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::io::{self, BufRead};
 
-// daily temperatures
-// answer[i]
-//
-
 struct Solution;
 
 impl Solution {
   pub fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {
-    // 2
     let corr = h as f64 / (piles.len() as f64);
 
     let mut min = i32::MAX;
@@ -41,7 +36,8 @@ impl Solution {
       }
 
       if bsum == h {
-        bmin = mid; break;
+        bmin = mid;
+        break;
       }
 
       if bsum > h {
@@ -53,23 +49,35 @@ impl Solution {
       }
     }
 
-    dbg!(bmin, left, mid);
+    // thats wierd here
+    // alot between left and bmin
+    for l in left..bmin {
+      let mut bsum = 0;
 
-    -1
+      for pile in &piles {
+        let div = *pile as f64 / l as f64;
+        let amount = div.ceil() as i32;
+
+        bsum += amount;
+      }
+
+      if bsum == h && l < bmin {
+        bmin = l;
+      }
+    }
+
+    bmin
   }
 }
 
 fn main() {
-  Solution::min_eating_speed(vec![3, 6, 7, 11], 8);
+  let s1 = Solution::min_eating_speed(vec![3, 6, 7, 11], 8);
+  let s2 = Solution::min_eating_speed(vec![30, 11, 23, 4, 20], 5);
+  let s3 = Solution::min_eating_speed(vec![30, 11, 23, 4, 20], 6);
 
-  println!("------");
-
-  Solution::min_eating_speed(vec![30, 11, 23, 4, 20], 5);
-
-  println!("------");
-
-  Solution::min_eating_speed(vec![30, 11, 23, 4, 20], 6);
-
+  println!("{:?}", s1);
+  println!("{:?}", s2);
+  println!("{:?}", s3);
 }
 
 // [3, 6, 7, 11]

@@ -1,49 +1,45 @@
+use std::collections::HashMap;
 use std::collections::HashSet;
 use std::io::{self, BufRead};
-use std::collections::HashMap;
 
-// 
-
+//
 
 struct Solution;
 
 impl Solution {
-  pub fn eval_rpn(
-    tokens: Vec<&str>
-  ) -> i32 {
+  pub fn eval_rpn(tokens: Vec<&str>) -> i32 {
     let mut sum = 0;
     let mut stack: Vec<String> = vec![];
 
-    let ops: HashMap<&str, fn(i32, i32) -> i32> = HashMap::from([
+    let ops: HashMap<&str, fn(i32, i32) -> i32> =
+      HashMap::from([
         ("+", (|x, y| x + y) as fn(i32, i32) -> i32),
         ("-", (|x, y| x - y) as fn(i32, i32) -> i32),
         ("*", (|x, y| x * y) as fn(i32, i32) -> i32),
         ("/", (|x, y| x / y) as fn(i32, i32) -> i32),
-    ]);
+      ]);
 
     for token in tokens {
-        if let Ok(n) = token.parse::<i32>() {
-            stack.push(n.to_string());
-        } else {
-            println!("{:?}", stack);
-            let n1 = stack.pop().map(|r| r.parse()).unwrap();
-            let n2 = stack.pop().map(|r| r.parse()).unwrap();
+      if let Ok(n) = token.parse::<i32>() {
+        stack.push(n.to_string());
+      } else {
+        println!("{:?}", stack);
+        let n1 = stack.pop().map(|r| r.parse()).unwrap();
+        let n2 = stack.pop().map(|r| r.parse()).unwrap();
 
-            if let Some(cb) = ops.get(token) {
-                let tmp = cb(n2.unwrap(), n1.unwrap());
-                stack.push(tmp.to_string());
-            }
+        if let Some(cb) = ops.get(token) {
+          let tmp = cb(n2.unwrap(), n1.unwrap());
+          stack.push(tmp.to_string());
         }
-    };
+      }
+    }
 
-    stack.last().unwrap().parse::<i32>().unwrap()
-}
+    stack.last().unwrap().parse::<i32>().expect("int")
+  }
 }
 
 fn main() {
-  let tokens = vec![
-    "4", "13", "5", "/", "+"
-  ];
+  let tokens = vec!["4", "13", "5", "/", "+"];
 
   let ans = Solution::eval_rpn(tokens);
 

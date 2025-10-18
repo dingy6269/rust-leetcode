@@ -23,7 +23,7 @@ impl Solution {
     let mut left = 0;
     let mut right = matrix.len() - 1;
 
-    let mut mid_answer = -1;
+    let mut arr = None;
 
     // O(log n)
     while left <= right {
@@ -43,30 +43,33 @@ impl Solution {
       }
 
       if target > first && target < last {
-        mid_answer = mid as i32;
+        arr = Some(mid);
         break;
       }
     };
 
-    dbg!(mid_answer);
 
-    let arr = matrix[mid_answer];
+    if (arr.is_none()) {
+        return false;
+    }
 
+    
+    let tarr = &matrix[arr.unwrap()];
     let mut left = 0;
-    let mut right = arr.len() - 1;
+    let mut right = tarr.len() - 1;
 
     while left <= right {
         let mut mid = (left + right) / 2;
 
-        if (target > arr[mid]) {
+        if (target > tarr[mid]) {
             left = mid + 1 
         }
 
-        if (target < arr[mid]) {
+        if (target < tarr[mid]) {
             right = mid - 1
         }
 
-        if (target == arr[mid]) {
+        if (target == tarr[mid]) {
             return true
         }
     }
@@ -82,7 +85,9 @@ fn main() {
     vec![23, 30, 34, 60],
   ];
 
-  Solution::search_matrix(matrix, 3);
+  let ans = Solution::search_matrix(matrix, 3);
+
+  println!("{:?}", ans);
 }
 
 // 8x8

@@ -34,6 +34,8 @@ impl Solution {
     // 3 % 3 == 0
     // 6 % 3 == 0
 
+    dbg!(min);
+
     let mut bmin: i32 = i32::MAX;
 
     while left <= right {
@@ -42,11 +44,12 @@ impl Solution {
       let mut bsum = 0;
 
       for (j, node) in piles.iter().enumerate() {
-        // 3 => 10
+        // [[5]]
         // 1
         // 2
+        // 2
         // 3
-        // 4
+
         let div = (*node as f64 / mid as f64);
         let amount = div.ceil() as i32;
 
@@ -76,7 +79,7 @@ impl Solution {
     // continue find the final min
     // this is last block
 
-    dbg!(bmin);
+    dbg!(bmin, left);
 
     -1
   }

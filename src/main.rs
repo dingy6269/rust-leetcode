@@ -37,7 +37,8 @@ fn solution(mut nodes: Vec<String>) -> i32 {
 
   // nodes
   for (i, node) in nodes.iter().enumerate() {
-    let chars: Vec<char> = node.chars().collect();
+    let chars: Vec<char> =
+      node.chars().take(NODES_LEN).collect();
 
     // W - [1]
     // x <= [1]

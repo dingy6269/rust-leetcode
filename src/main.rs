@@ -65,7 +65,7 @@ fn solution(mut nodes: Vec<String>) -> i32 {
         } else {
           if chars[j] != x_vec[j].unwrap() {
             x_count = x_count.saturating_sub(1);
-            y_vec[j] = Some('-');
+            x_vec[j] = Some('-');
             // ??
           }
         }
@@ -109,7 +109,7 @@ fn input() -> String {
     .read_line(&mut input)
     .expect("Failed to read line");
 
-  return input;
+  input.trim().to_string()
 }
 
 fn input_i32() -> i32 {

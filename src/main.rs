@@ -47,31 +47,37 @@ fn solution(mut nodes: Vec<String>) -> i32 {
     for j in 0..NODES_LEN {
       let unit = chars[j];
 
-      if y_vec[i].is_none() {
-        y_vec[i] = Some(unit);
-      } else {
-        if unit != y_vec[i].unwrap() {
-          y_count = y_count.saturating_sub(1);
-          y_vec[i] = Some('-');
+      // - matters here
+      if y_vec[i] != Some('-') {
+        if y_vec[i].is_none() {
+          y_vec[i] = Some(unit);
+        } else {
+          if unit != y_vec[i].unwrap() {
+            y_count = y_count.saturating_sub(1);
+            y_vec[i] = Some('-');
+          }
         }
       }
 
-      if x_vec[j].is_none() {
-        x_vec[j] = Some(unit);
-      } else {
-        if chars[j] != x_vec[j].unwrap() {
-          x_count = x_count.saturating_sub(1);
-          // ??
+      if x_vec[j] != Some('-') {
+        if x_vec[j].is_none() {
+          x_vec[j] = Some(unit);
+        } else {
+          if chars[j] != x_vec[j].unwrap() {
+            x_count = x_count.saturating_sub(1);
+            y_vec[j] = Some('-');
+            // ??
+          }
         }
       }
     }
   }
 
-//   dbg!(x_count);
-//   dbg!(y_count);
+  //   dbg!(x_count);
+  //   dbg!(y_count);
 
-//   dbg!(x_vec);
-//   dbg!(y_vec);
+  //   dbg!(x_vec);
+  //   dbg!(y_vec);
 
   (x_count + y_count) as i32
 }

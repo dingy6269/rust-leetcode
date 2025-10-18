@@ -1,91 +1,51 @@
 use std::collections::HashSet;
 use std::io::{self, BufRead};
+use std::collections::HashMap;
 
-// sorted matrix
-// so binary search
-// lets go
+// 
 
-// it could be matrix any size
-// this is just an example
-
-// so yeah binary search
-// absolutely
-// this thiing is sorted +
-// so in 2d matrixes this is it
 
 struct Solution;
 
 impl Solution {
-  pub fn search_matrix(
-    matrix: Vec<Vec<i32>>,
-    target: i32,
-  ) -> bool {
-    let mut left = 0;
-    let mut right = matrix.len() - 1;
+  pub fn eval_rpn(
+    tokens: Vec<&str>
+  ) -> i32 {
+    let mut sum = 0;
+    let mut stack: Vec<String> = vec![];
 
-    let mut arr = None;
+    let ops: HashMap<&str, fn(i32, i32) -> i32> = HashMap::from([
+        ("+", (|x, y| x + y) as fn(i32, i32) -> i32),
+        ("-", (|x, y| x - y) as fn(i32, i32) -> i32),
+        ("*", (|x, y| x * y) as fn(i32, i32) -> i32),
+        ("/", (|x, y| x / y) as fn(i32, i32) -> i32),
+    ]);
 
-    // O(log n)
-    while left <= right {
-      // 0 + 2  //// 2 => 1
-      let mid = (left + right) / 2;
+    for token in tokens {
+        if let Ok(n) = token.parse::<i32>() {
+            stack.push(n.to_string());
+        } else {
+            println!("{:?}", stack);
+            let n1 = stack.pop().map(|r| r.parse()).unwrap();
+            let n2 = stack.pop().map(|r| r.parse()).unwrap();
 
-      let first = matrix[mid][0];
-      // refactor
-      let last = matrix[mid].last().unwrap().clone();
-
-      if last < target {
-        left = mid + 1;
-      }
-
-      if first > target {
-        right = mid  - 1;
-      }
-
-      if target > first && target < last {
-        arr = Some(mid);
-        break;
-      }
+            if let Some(cb) = ops.get(token) {
+                let tmp = cb(n2.unwrap(), n1.unwrap());
+                stack.push(tmp.to_string());
+            }
+        }
     };
 
-
-    if (arr.is_none()) {
-        return false;
-    }
-
-    
-    let tarr = &matrix[arr.unwrap()];
-    let mut left = 0;
-    let mut right = tarr.len() - 1;
-
-    while left <= right {
-        let mut mid = (left + right) / 2;
-
-        if (target > tarr[mid]) {
-            left = mid + 1 
-        }
-
-        if (target < tarr[mid]) {
-            right = mid - 1
-        }
-
-        if (target == tarr[mid]) {
-            return true
-        }
-    }
-
-    false
-  }
+    stack.last().unwrap().parse::<i32>().unwrap()
+}
 }
 
 fn main() {
-  let matrix: Vec<Vec<i32>> = vec![
-    vec![1, 3, 5, 7],
-    vec![10, 11, 16, 20],
-    vec![23, 30, 34, 60],
+  let tokens = vec![
+    "4", "13", "5", "/", "+"
   ];
 
-  let ans = Solution::search_matrix(matrix, 3);
+  let ans = Solution::eval_rpn(tokens);
 
   println!("{:?}", ans);
 }
@@ -112,8 +72,8 @@ fn main() {
 //     0
 // }
 
-// fn solution(y: i32, w: i32) -> f64 {
-//   ((6 - y.max(w)) + 1) as f64 / 6.0
+// fn solution(y: i32, w: i32) -> i32 {
+//   ((6 - y.max(w)) + 1) as i32 / 6.0
 // }
 
 // // nothing stops you from now

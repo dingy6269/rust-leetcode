@@ -23,18 +23,8 @@ impl Solution {
       max = max.max(cel.ceil() as i32);
     }
 
-    // acting like an array with indexes
     let mut left = min.clone();
     let mut right = max.clone();
-
-    // EXAMPLE
-    // ((3))
-
-    // [3]
-    // 3 % 3 == 0
-    // 6 % 3 == 0
-
-    dbg!(min);
 
     let mut bmin: i32 = i32::MAX;
 
@@ -43,30 +33,17 @@ impl Solution {
 
       let mut bsum = 0;
 
-      for (j, node) in piles.iter().enumerate() {
-        // [[5]]
-        // 1
-        // 2
-        // 2
-        // 3
-
-        let div = (*node as f64 / mid as f64);
+      for pile in &piles {
+        let div = *pile as f64 / mid as f64;
         let amount = div.ceil() as i32;
 
         bsum += amount;
-
-
-        // [4] 8 == 8
       }
-      dbg!(mid, bsum, h);
 
       if bsum == h {
-        bmin = mid;
-        break;
+        bmin = mid; break;
       }
 
-      // мид должен стать больше
-      // здесь reverse
       if bsum > h {
         left = mid + 1;
       }
@@ -76,10 +53,7 @@ impl Solution {
       }
     }
 
-    // continue find the final min
-    // this is last block
-
-    dbg!(bmin, left);
+    dbg!(bmin, left, mid);
 
     -1
   }

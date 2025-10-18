@@ -1,37 +1,29 @@
-
-
-
-
-
-
-
 use std::collections::HashSet;
 use std::io::{self, BufRead};
-
 
 const NODES_LEN: usize = 8;
 
 // 8x8
 // vertical or horizontal
 
-const NODES_LEN: usize = 8;
+// const NODES_LEN: usize = 8;
 
-fn solution(nodes: Vec<String>) -> i32 {
-    let mut x_vec: Vec<Option<char>> = vec![None; NODES_LEN];
-    let mut y_vec: Vec<Option<char>> = vec![None; NODES_LEN];
+// fn solution(nodes: Vec<String>) -> i32 {
+//     let mut x_vec: Vec<Option<char>> = vec![None; NODES_LEN];
+//     let mut y_vec: Vec<Option<char>> = vec![None; NODES_LEN];
 
-    for node in nodes.iter() {
-        let chars: Vec<char> = node.chars().collect();
+//     for node in nodes.iter() {
+//         let chars: Vec<char> = node.chars().collect();
 
-        for ch in 0..NODES_LEN {
-            if x_vec[ch].is_none() {
-                x_vec[ch] = Some(chars[ch]);
-            }
-        }
-    }
+//         for ch in 0..NODES_LEN {
+//             if x_vec[ch].is_none() {
+//                 x_vec[ch] = Some(chars[ch]);
+//             }
+//         }
+//     }
 
-    0
-}
+//     0
+// }
 
 fn solution(mut nodes: Vec<String>) -> i32 {
   let mut y_vec = vec![None; NODES_LEN];
@@ -41,57 +33,49 @@ fn solution(mut nodes: Vec<String>) -> i32 {
   let mut y_count = NODES_LEN;
 
   // if y_vec i is None
-  // 
+  //
 
   // nodes
   for (i, node) in nodes.iter().enumerate() {
-    let chars = node.chars().collect();
+    let chars: Vec<char> = node.chars().collect();
 
-    if y_vec[i].is_none() {
-        y_vec[i] = Some() 
-    }
+    // W - [1]
+    // x <= [1]
+    // y <= [4]
 
     // chars
     for j in 0..NODES_LEN {
-        if x_vec[j].is_none() {
-            x_vec[j] = Some(chars[j]);
-        } else {
-            if chars[j] != x_vec[j].unwrap() {
-                x_count -= 1;
-                // ??
-            }
+      let unit = chars[j];
+
+      if y_vec[i].is_none() {
+        y_vec[i] = Some(unit);
+      } else {
+        if unit != y_vec[i].unwrap() {
+          y_count -= 1; // ??
         }
+      }
+
+      if x_vec[j].is_none() {
+        x_vec[j] = Some(unit);
+      } else {
+        if chars[j] != x_vec[j].unwrap() {
+          x_count -= 1;
+          // ??
+        }
+      }
     }
-  };
-  
-   (x_count + y_count) as i32
-}
+  }
 
-
-fn solution(mut nodes: Vec<String>) -> i32 {
-  let mut y_vec = vec![None; NODES_LEN];
-  let mut x_vec = vec![None; NODES_LEN];
-
-  // nodes
-  for (i, node) in nodes.iter().enumerate() {
-  
-  // chars
-  for ch in 0..NODES_LEN {
-    if x_vec[ch].is_none() {
-        x_vec[ch] = Some(node[ch]);
-  };
-
-  };
-
-  return 0;
-};
+  (x_count + y_count) as i32
 }
 
 fn main() {
+  let mut nodes = vec![];
+
   for _ in 0..8 {
     let i = input();
     nodes.push(i);
-  };
+  }
 
   let sol = solution(nodes);
 
@@ -106,7 +90,6 @@ where
 }
 
 fn input() -> String {
-
   let mut input = String::new();
 
   io::stdin()
@@ -145,7 +128,3 @@ fn input_vec_i32() -> Vec<i32> {
 
   nums
 }
-
-fn solution(n: i32, a: Vec<(i32, i32)>) -> i32 {
-
-};

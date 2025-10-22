@@ -56,11 +56,11 @@ fn solution(matrix: &Vec<Vec<i32>>, init: (i32, i32)) -> i32 {
   const target: (i32, i32) = (2, 2);
 
   while cond {
-    let delta_x = coords.0 - target.0;
-    let delta_y = coords.1 - target.1;
+    let dx = coords.0 - target.0;
+    let dy = coords.1 - target.1;
 
     if (delta_x > 0) {
-      
+
     }
 
 

@@ -13,7 +13,6 @@
 use std::collections::HashSet;
 use std::io::{self, BufRead};
 
-
 // M * N cells
 // 2 * 1 cell
 // can be TURNED
@@ -21,7 +20,6 @@ use std::io::{self, BufRead};
 //  1. D lie on the two cells
 //  3. do not intersect
 //  4. each domino lie inddie the board (with collisions)
-
 
 // fn quicksort<T: Ord + Clone>(list: &Vec<T>) -> Vec<T> {
 //   if list.len() < 2 {
@@ -50,23 +48,38 @@ use std::io::{self, BufRead};
 
 // (x, y)
 
-fn solution(matrix: &Vec<Vec<i32>>, init: (i32, i32)) -> i32 {
-  let cond = true;
-  let coords = init.clone();
-  const target: (i32, i32) = (2, 2);
+// x = 0
+// y = 1
 
-  while cond {
+fn solution(
+  mut matrix: Vec<Vec<i32>>,
+  init: (i32, i32),
+) -> i32 {
+  let mut coords = init.clone();
+  let target: (i32, i32) = (2, 2);
+  let mut n = 0;
+
+  loop {
     let dx = coords.0 - target.0;
     let dy = coords.1 - target.1;
 
-    if (delta_x > 0) {
-
+    if (dx == 0 && dy == 0) {
+      return n;
     }
 
+    let (x, y) = (coords.0 as usize, coords.1 as usize);
 
+    for (delta, i, coord) in
+      [(dx, x, &mut coords.0), (dy, y, &mut coords.1)]
+    {
+      if delta != 0 {
+        let i1 = if delta > 0 { i - 1 } else { i + 1 };
+        matrix.swap(i, i1);
+        *coord = i1 as i32;
+        n += 1;
+      }
+    }
   }
-
-  0
 }
 
 fn main() {
@@ -78,34 +91,32 @@ fn main() {
 
     for (j, num) in x.iter().enumerate() {
       if *num == 1 {
-        init = Some((
-          i, j as i32
-        ));
+        init = Some((i, j as i32));
       }
     }
     matrix.push(x);
   }
 
-  let sol = solution(&matrix);
+  let sol = solution(matrix, init.unwrap());
 
   send(sol);
 }
 
-
-
-fn send<T>(data: T) where T: std::fmt::Display {
+fn send<T>(data: T)
+where
+  T: std::fmt::Display,
+{
   println!("{}", data);
 }
-
 
 fn input() -> String {
   let mut input = String::new();
 
-  io::stdin().read_line(
-        &mut input
-  ).expect("Failed to read line");
+  io::stdin()
+    .read_line(&mut input)
+    .expect("Failed to read line");
 
-  return input.trim().to_string()
+  return input.trim().to_string();
 }
 
 fn input_i32() -> i32 {
@@ -124,15 +135,16 @@ fn input_tuple_i32() -> (i32, i32) {
     (a.trim().parse().unwrap(), b.trim().parse().unwrap())
   };
 
-  return (n, k)
+  return (n, k);
 }
 
 fn input_vec_i32() -> Vec<i32> {
-   let input = input();
+  let input = input();
 
-    let nums: Vec<i32> = input.split_whitespace()
-        .map(|s| s.parse().expect("Not an integer!"))
-        .collect();
+  let nums: Vec<i32> = input
+    .split_whitespace()
+    .map(|s| s.parse().expect("Not an integer!"))
+    .collect();
 
-    nums
+  nums
 }

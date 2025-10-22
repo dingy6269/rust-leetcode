@@ -13,86 +13,68 @@
 use std::collections::HashSet;
 use std::io::{self, BufRead};
 
-// M * N cells
-// 2 * 1 cell
-// can be TURNED
-
-//  1. D lie on the two cells
-//  3. do not intersect
-//  4. each domino lie inddie the board (with collisions)
-
-// fn quicksort<T: Ord + Clone>(list: &Vec<T>) -> Vec<T> {
-//   if list.len() < 2 {
-//     list.to_vec()
-//   } else {
-//     let pivot = &list[0];
-//
-//     let mut less = vec![];
-//     let mut greater = vec![];
-//
-//     for x in &list[1..] {
-//       if x <= pivot {
-//         less.push(x.clone());
-//       } else {
-//         greater.push(x.clone());
-//       }
-//     }
-//
-//     let mut new = Vec::with_capacity(list.len());
-//     new.append(&mut quicksort(&less));
-//     new.push(pivot.clone());
-//     new.append(&mut quicksort(&greater));
-//     new
-//   }
-// }
-
 //
 
 
-// 10
-// (6 4)
+// O(n) - STL
 
+fn solution(mut k: i32, mut vec: Vec<i32>) -> i32 {
+  let mut min = i32::MAX;
+  let mut midx = 0;
 
-// 5
-// (3, 1, 2, 1)
+  for i in 0..vec.len() {
 
-// 5
-// => (1, 1, 2, 3)
+    // genius check,
+    if i + (k as usize) <= vec.len() {
+      let sub = &vec[i..i + (k as usize)];
 
-// 10
-// 2 3 4 2 1 1
+      dbg!(&sub);
 
+      let sum = sub.iter().sum::<i32>();
 
-// 10
-// 1 1 2 2 3 4
+      dbg!(&sum);
 
-// (9)
-
-fn solution(mut t: i32, mut vec: Vec<i32>) -> i32 {
-  // if vec.len() == 1 {
-  //   return if vec[0] <= t { 1 } else { 0 };
-  // }
-
-  vec.sort_by(|a, b| a.cmp(b));
-
-  // dbg!(&vec);
-  let mut n = 0;
-
-  while (t > 0 && n < vec.len())  {
-    dbg!(&vec);
-    dbg!(t);
-    dbg!(n);
-
-    if t < vec[n] {
-      break;
+      if sum < min {
+        min = sum;
+        // 1-based indexing
+        midx = (i + 1)
+      }
     }
 
-    t -= vec[n];
-    n += 1;
+    // 1, 2, 6
   };
 
-  (n) as i32
+  midx as i32
 }
+
+//
+// fn solution(mut T: i32, mut vec: Vec<i32>) -> i32 {
+//   // if vector IS empty??
+//   if vec.is_empty() {
+//     return 0;
+//   }
+//
+//   let mut r = 0;
+//
+//   for start in 0..vec.len() {
+//     let mut n = 0;
+//     let mut t = T.clone();
+//
+//     for i in (start as usize)..vec.len() {
+//       if t < vec[i] {
+//         break;
+//       }
+//
+//       t -= vec[i];
+//       n += 1;
+//     }
+//
+//     r = r.max(n);
+//   }
+//
+//   r as i32
+// }
+
 
 // 6
 
@@ -106,10 +88,10 @@ fn solution(mut t: i32, mut vec: Vec<i32>) -> i32 {
 // 10
 
 fn main() {
-  let (mut n, mut t) = input_tuple_i32();
+  let (mut n, mut k) = input_tuple_i32();
   let vec = input_vec_i32();
 
-  let sol = solution(t, vec);
+  let sol = solution(k, vec);
 
   send(sol);
 }

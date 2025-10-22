@@ -48,42 +48,45 @@ use std::io::{self, BufRead};
 //   }
 // }
 
-fn solution(inp: String) -> String {
-  let mut stack: Vec<String> = Vec::new();
-  let s : Vec<i32> = inp.split('+').map(|s| s.parse::<i32>().unwrap()).collect();
+// (x, y)
 
-  if (s.len() < 2 ) {
-    return inp;
-  }
+fn solution(matrix: &Vec<Vec<i32>>, init: (i32, i32)) -> i32 {
+  let cond = true;
+  let coords = init.clone();
+  const target: (i32, i32) = (2, 2);
 
-  let pivot = &s[0];
-  // let less = &s[..pivot];
-  // let greater = &s[pivot..];
+  while cond {
+    let delta_x = coords.0 - target.0;
+    let delta_y = coords.1 - target.1;
 
-  let mut less = vec![];
-  let mut greater = vec![];
-
-  for x in &s[1..] {
-    if x < pivot {
-      less.push(x);
-    } else {
-      greater.push(x);
+    if (delta_x > 0) {
+      
     }
+
+
   }
 
-  let new = Vec::with_capacity(s.len());
-  new.push(solution(less));
-  new.push(x);
-  new.push(solution(greater));
-
-  new
+  0
 }
 
 fn main() {
-  let inp = "2+1+2+2+2+3+1+3+1+2".to_string();
+  let mut matrix: Vec<Vec<i32>> = Vec::new();
+  let mut init: Option<(i32, i32)> = None;
 
+  for i in 0..5 {
+    let x = input_vec_i32();
 
-  let sol = solution(inp);
+    for (j, num) in x.iter().enumerate() {
+      if *num == 1 {
+        init = Some((
+          i, j as i32
+        ));
+      }
+    }
+    matrix.push(x);
+  }
+
+  let sol = solution(&matrix);
 
   send(sol);
 }

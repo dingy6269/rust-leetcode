@@ -16,7 +16,54 @@ use std::io::{self, BufRead};
 //
 
 
-// O(n) - STL
+// O(n * k) - STL
+// O(n) - Sliding window
+
+// sliding window
+
+// Window 1: [1, 2, 6]
+// Calculate: 1 + 2 + 6 = 9  (3 additions)
+//
+// Window 2: [2, 6, 1]
+// Calculate: 2 + 6 + 1 = 9  (3 additions)
+// ↑   ↑
+// These are REPEATED from Window 1!
+//
+
+fn s_solution(mut k: i32, mut vec: Vec<i32>) -> i32 {
+  // k = 3
+  let k = k as usize;
+
+  // k = size of each window (number of consecutive elements to sum)
+  
+
+  // first window
+  let first_window = &vec[0..k];
+  let mut sum: i32 = first_window.iter().sum(); // recalculates sum here
+
+  // first sum (not i32::MAX)
+  let mut min = sum;
+  let mut midx = 0;
+
+  // because we took 0
+  // 1, 4
+  for i in 1..=(vec.len() - k) {
+    // Window 3: [6, 1, 1]
+    // Calculate: 9 - 2 + 1 = 8  (1 subtraction + 1 addition)
+
+    // re-calculate new sum
+    // REMOVE OLD, ADD NEW (SLIDING WINDOW)
+    sum = sum - vec[i - 1] + vec[i + k - 1];
+
+    if sum < min {
+      min = sum;
+      midx = i;
+    }
+  }
+
+  (midx + 1) as i32 // 1-based indexing
+}
+
 
 fn solution(mut k: i32, mut vec: Vec<i32>) -> i32 {
   let mut min = i32::MAX;
@@ -26,6 +73,8 @@ fn solution(mut k: i32, mut vec: Vec<i32>) -> i32 {
 
     // genius check,
     if i + (k as usize) <= vec.len() {
+      // repetition happens here
+      // so sliding window fixes it
       let sub = &vec[i..i + (k as usize)];
 
       dbg!(&sub);

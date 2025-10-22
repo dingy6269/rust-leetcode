@@ -46,24 +46,47 @@ use std::io::{self, BufRead};
 //   }
 // }
 
-// 
+//
 
 
-// n = 4
-// t = 5
-
-// 4, 5
-// 1, 1, 2 ,3
+// 10
+// (6 4)
 
 
-// ai => 3, 1, 2, 1
+// 5
+// (3, 1, 2, 1)
+
+// 5
+// => (1, 1, 2, 3)
+
+// 10
+// 2 3 4 2 1 1
+
+
+// 10
+// 1 1 2 2 3 4
+
+// (9)
 
 fn solution(mut t: i32, mut vec: Vec<i32>) -> i32 {
+  // if vec.len() == 1 {
+  //   return if vec[0] <= t { 1 } else { 0 };
+  // }
+
   vec.sort_by(|a, b| a.cmp(b));
-  // 1, 1, 2, 3
+
+  // dbg!(&vec);
   let mut n = 0;
 
   while (t > 0 && n < vec.len())  {
+    dbg!(&vec);
+    dbg!(t);
+    dbg!(n);
+
+    if t < vec[n] {
+      break;
+    }
+
     t -= vec[n];
     n += 1;
   };
@@ -93,7 +116,7 @@ fn main() {
 
 fn send<T>(data: T)
 where
-  T: std::fmt::Display,
+    T: std::fmt::Display,
 {
   println!("{}", data);
 }
@@ -103,8 +126,8 @@ fn input() -> String {
   let mut input = String::new();
 
   io::stdin()
-    .read_line(&mut input)
-    .expect("Failed to read line");
+      .read_line(&mut input)
+      .expect("Failed to read line");
 
   return input.trim().to_string();
 }
@@ -132,9 +155,9 @@ fn input_vec_i32() -> Vec<i32> {
   let input = input();
 
   let nums: Vec<i32> = input
-    .split_whitespace()
-    .map(|s| s.parse().expect("Not an integer!"))
-    .collect();
+      .split_whitespace()
+      .map(|s| s.parse().expect("Not an integer!"))
+      .collect();
 
   nums
 }

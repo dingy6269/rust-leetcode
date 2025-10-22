@@ -53,9 +53,8 @@ use std::io::{self, BufRead};
 
 fn solution(
   mut matrix: Vec<Vec<i32>>,
-  init: (i32, i32),
+  mut coords: (i32, i32),
 ) -> i32 {
-  let mut coords = init.clone();
   let target: (i32, i32) = (2, 2);
   let mut n = 0;
 

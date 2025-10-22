@@ -49,30 +49,26 @@ use std::io::{self, BufRead};
 // 
 
 
+// n = 4
+// t = 5
 
-fn solution(vec: Vec<String>) -> i32 {
-  let mut r = 1;
-  let mut stack: Vec<String> = vec![];
+// 4, 5
+// 1, 1, 2 ,3
 
-  let collides = |a: &str, b: &str| {
-    return a.chars().nth(1) == b.chars().next()
+
+// ai => 3, 1, 2, 1
+
+fn solution(mut t: i32, mut vec: Vec<i32>) -> i32 {
+  vec.sort_by(|a, b| a.cmp(b));
+  // 1, 1, 2, 3
+  let mut n = 0;
+
+  while (t > 0 && n < vec.len())  {
+    t -= vec[n];
+    n += 1;
   };
 
-  for num in vec {
-    if let Some(last) = stack.last() {
-      if collides(last.as_str(), &num) {
-        dbg!(&num);
-        r += 1;
-        stack.clear();
-      } else {
-        stack.push(num);
-      }
-    } else {
-      stack.push(num);
-    }
-  }
-
-  r
+  (n) as i32
 }
 
 // 6
@@ -87,17 +83,10 @@ fn solution(vec: Vec<String>) -> i32 {
 // 10
 
 fn main() {
-  let mut vec: Vec<String> = Vec::new();
+  let (mut n, mut t) = input_tuple_i32();
+  let vec = input_vec_i32();
 
-  let mut n = input_i32();
-
-  while n > 0 {
-    let t = input();
-    vec.push(t);
-    n -= 1;
-  }
-
-  let sol = solution(vec);
+  let sol = solution(t, vec);
 
   send(sol);
 }

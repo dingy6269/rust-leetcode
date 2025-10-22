@@ -35,7 +35,7 @@ fn s_solution(mut k: i32, mut vec: Vec<i32>) -> i32 {
   let k = k as usize;
 
   // k = size of each window (number of consecutive elements to sum)
-  
+
 
   // first window
   let first_window = &vec[0..k];
@@ -140,7 +140,7 @@ fn main() {
   let (mut n, mut k) = input_tuple_i32();
   let vec = input_vec_i32();
 
-  let sol = solution(k, vec);
+  let sol = s_solution(k, vec);
 
   send(sol);
 }

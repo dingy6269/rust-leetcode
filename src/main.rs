@@ -46,57 +46,58 @@ use std::io::{self, BufRead};
 //   }
 // }
 
-// (x, y)
+// 
 
-// x = 0
-// y = 1
 
-fn solution(
-  mut matrix: Vec<Vec<i32>>,
-  mut coords: (i32, i32),
-) -> i32 {
-  let target: (i32, i32) = (2, 2);
-  let mut n = 0;
 
-  loop {
-    let dx = coords.0 - target.0;
-    let dy = coords.1 - target.1;
+fn solution(vec: Vec<String>) -> i32 {
+  let mut r = 1;
+  let mut stack: Vec<String> = vec![];
 
-    if (dx == 0 && dy == 0) {
-      return n;
-    }
+  let collides = |a: &str, b: &str| {
+    return a.chars().nth(1) == b.chars().next()
+  };
 
-    let (x, y) = (coords.0 as usize, coords.1 as usize);
-
-    for (delta, i, coord) in
-      [(dx, x, &mut coords.0), (dy, y, &mut coords.1)]
-    {
-      if delta != 0 {
-        let i1 = if delta > 0 { i - 1 } else { i + 1 };
-        matrix.swap(i, i1);
-        *coord = i1 as i32;
-        n += 1;
+  for num in vec {
+    if let Some(last) = stack.last() {
+      if collides(last.as_str(), &num) {
+        dbg!(&num);
+        r += 1;
+        stack.clear();
+      } else {
+        stack.push(num);
       }
+    } else {
+      stack.push(num);
     }
   }
+
+  r
 }
 
+// 6
+
+// 10
+// 10
+// 10
+
+// 01
+
+// 10
+// 10
+
 fn main() {
-  let mut matrix: Vec<Vec<i32>> = Vec::new();
-  let mut init: Option<(i32, i32)> = None;
+  let mut vec: Vec<String> = Vec::new();
 
-  for i in 0..5 {
-    let x = input_vec_i32();
+  let mut n = input_i32();
 
-    for (j, num) in x.iter().enumerate() {
-      if *num == 1 {
-        init = Some((i, j as i32));
-      }
-    }
-    matrix.push(x);
+  while n > 0 {
+    let t = input();
+    vec.push(t);
+    n -= 1;
   }
 
-  let sol = solution(matrix, init.unwrap());
+  let sol = solution(vec);
 
   send(sol);
 }
@@ -107,6 +108,7 @@ where
 {
   println!("{}", data);
 }
+
 
 fn input() -> String {
   let mut input = String::new();
